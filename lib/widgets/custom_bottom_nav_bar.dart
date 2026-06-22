@@ -1,0 +1,51 @@
+import 'package:flutter/material.dart';
+import '../data/constants.dart';
+
+class CustomBottomNavBar extends StatelessWidget {
+  final int currentIndex;
+  final Function(int) onTap;
+
+  const CustomBottomNavBar({
+    super.key,
+    required this.currentIndex,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      currentIndex: currentIndex,
+      onTap: onTap,
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: KConstants.primaryColor,
+      elevation: 0,
+      selectedItemColor: KConstants.successColor,
+      unselectedItemColor: KConstants.textLightColor,
+      iconSize: 30,
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home_outlined),
+          label: "Início",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.map_outlined),
+          label: "Próximos",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.sports_soccer_outlined),
+          label: "Jogos",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.article_outlined),
+          label: "Notícias",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person_outline),
+          label: "Perfil",
+        ),
+      ],
+    );
+  }
+}
