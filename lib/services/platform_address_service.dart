@@ -166,7 +166,7 @@ class PlatformAddressService {
       if (isWeb) {
         // Para web, usar proxy CORS
         try {
-          response = await CORSProxyService.getWithCORS(url);
+          response = await  CORSProxyService.getWithCORS(url);
         } catch (e) {
           print('DEBUG: Proxy CORS falhou, tentando requisição direta: $e');
           response = await http
