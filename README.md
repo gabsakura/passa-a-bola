@@ -134,12 +134,12 @@ Notas:
 
 ## Demonstração
 
-<img src="web/assets/api.png" alt="api_image" width="200"/> 
 <img src ="web/assets/Versão_pc.png" alt="Imagem versão PC" >
+<img src ="web/assets/Principal_adminPC.png" alt="Imagem versão PC" >
+<img src="web/assets/api.png" alt="api_image" width="200"/> 
 <img src="web/assets/padmincampeonatos.png" alt="gerenciar_campeonatos" width="200"/>
 <img src ="web/assets/Mapa_versãoPC.png" alt="Imagem versão PC" ">
 <img src="web/assets/gifdemonstracao.gif" alt="gerenciar_campeonatos" width="250"/> 
-<img src ="web/assets/Principal_adminPC.png" alt="Imagem versão PC" >
 
 API de futebol feminino, gerenciar campeonatos (PAdmin), gif do app.
 
