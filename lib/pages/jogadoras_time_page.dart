@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:passaabola/config/app_env.dart';
 import 'package:passaabola/data/constants.dart';
 import '../data/auth_roles.dart';
 import 'jogadora_dashboard_page.dart';
@@ -27,7 +28,7 @@ class JogadorasTimePage extends StatefulWidget {
 
 class _JogadorasTimePageState extends State<JogadorasTimePage> {
   // CONFIGURAÇÕES DA API
-  final String apiKey = '47886f91ab8bc012bf6d156b05bd4514';
+  String get apiKey => AppEnv.apiSportsKey;
   final String baseUrl = 'https://v3.football.api-sports.io';
 
   // ESTADO DA PÁGINA
@@ -53,8 +54,6 @@ class _JogadorasTimePageState extends State<JogadorasTimePage> {
   /// 3. Processa a resposta
   /// 4. Atualiza a interface
   Future<void> _fetchPlayers() async {
-    print('🔄 Iniciando busca de jogadoras...');
-
     // Ativa o indicador de carregamento
     setState(() {
       isLoading = true;
@@ -62,12 +61,15 @@ class _JogadorasTimePageState extends State<JogadorasTimePage> {
     });
 
     try {
+      if (apiKey.isEmpty) {
+        throw Exception(
+          'Configure APISPORTS_API_KEY para consultar as jogadoras.',
+        );
+      }
+
       // Pega o ID do time que foi passado como parâmetro
       final teamId = widget.team['id'];
       final url = '$baseUrl/players?team=$teamId&season=2023';
-
-      print('🏈 Buscando jogadoras do time ID: $teamId');
-      print('🔗 URL da requisição: $url');
 
       // Faz a requisição HTTP para a API
       final response = await http.get(
@@ -75,22 +77,16 @@ class _JogadorasTimePageState extends State<JogadorasTimePage> {
         headers: {'x-apisports-key': apiKey},
       );
 
-      print('📡 Status da resposta: ${response.statusCode}');
-      print('📄 Conteúdo da resposta: ${response.body}');
-
       // Verifica se a requisição foi bem-sucedida
       if (response.statusCode == 200) {
         // Converte a resposta JSON em um objeto Dart
         final data = json.decode(response.body);
 
         // Verifica se há dados na resposta
-        if (data['response'] != null) {
+        if (data['response'] != null && mounted) {
           setState(() {
             players = data['response']; // Salva as jogadoras
           });
-          print('✅ Jogadoras encontradas: ${players.length}');
-        } else {
-          print('⚠️ Nenhuma jogadora encontrada na resposta');
         }
       } else {
         // Se a requisição falhou, lança uma exceção
@@ -98,16 +94,18 @@ class _JogadorasTimePageState extends State<JogadorasTimePage> {
       }
     } catch (e) {
       // Se algo deu errado, mostra o erro
-      setState(() {
-        errorMessage = 'Erro ao carregar jogadoras: $e';
-      });
-      print('❌ Erro ao buscar jogadoras: $e');
+      if (mounted) {
+        setState(() {
+          errorMessage = 'Erro ao carregar jogadoras: $e';
+        });
+      }
     } finally {
       // Sempre desativa o carregamento, mesmo se der erro
-      setState(() {
-        isLoading = false;
-      });
-      print('🏁 Busca de jogadoras finalizada');
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 

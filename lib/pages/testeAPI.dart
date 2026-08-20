@@ -33,53 +33,49 @@ class _ApiState extends State<Api> {
       isLoading = true;
       errorMessage = null;
     });
-    // testar se a API esta funcionando
     try {
-      print('📡 Fazendo requisições para API...');
+      if (apiKey.isEmpty) {
+        throw Exception(
+          'Configure APISPORTS_API_KEY para consultar partidas e times.',
+        );
+      }
       await Future.wait([_fetchTeams(), _fetchFixtures()]);
-      print('✅ Dados carregados com sucesso!');
-      print('📊 Times encontrados: ${teams.length}');
-      print('⚽ Jogos encontrados: ${fixtures.length}');
     } catch (e) {
-      print('❌ Erro ao carregar dados: $e');
-      setState(() {
-        errorMessage = 'Erro ao carregar dados: $e';
-      });
+      if (mounted) {
+        setState(() {
+          errorMessage = 'Erro ao carregar dados: $e';
+        });
+      }
     } finally {
-      setState(() {
-        isLoading = false;
-      });
-      print('🏁 Carregamento finalizado');
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
   // faz a requisição da API para pegar os dados dos times
   Future<void> _fetchTeams() async {
     final url = '$baseUrl/teams?league=$leagueId&season=2023';
-    print('🏈 Fazendo requisição para times: $url');
 
     final response = await http.get(
       Uri.parse(url),
       headers: {'x-apisports-key': apiKey},
     );
 
-    print('📡 Resposta dos times - Status: ${response.statusCode}');
-    print('📄 Body dos times: ${response.body}');
     //verifica se a requisição funcionou
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      print('📊 Dados dos times decodificados: $data');
       //vferifica se os dados são validos
       if (data['response'] != null) {
-        setState(() {
-          teams = data['response'];
-        });
-        print('✅ Times carregados: ${teams.length}');
-      } else {
-        print('⚠️ Resposta dos times não contém dados válidos');
+        if (mounted) {
+          setState(() {
+            teams = data['response'];
+          });
+        }
       }
     } else {
-      print('❌ Erro na requisição dos times: ${response.statusCode}');
       throw Exception('Falha ao carregar times: ${response.statusCode}');
     }
   }
@@ -87,30 +83,23 @@ class _ApiState extends State<Api> {
   // requisição da API para os jogos
   Future<void> _fetchFixtures() async {
     final url = '$baseUrl/fixtures?league=$leagueId&season=2023';
-    print('⚽ Fazendo requisição para jogos: $url');
 
     final response = await http.get(
       Uri.parse(url),
       headers: {'x-apisports-key': apiKey},
     );
 
-    print('📡 Resposta dos jogos - Status: ${response.statusCode}');
-    print('📄 Body dos jogos: ${response.body}');
-
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      print('📊 Dados dos jogos decodificados: $data');
 
       if (data['response'] != null) {
-        setState(() {
-          fixtures = data['response'];
-        });
-        print('✅ Jogos carregados: ${fixtures.length}');
-      } else {
-        print('⚠️ Resposta dos jogos não contém dados válidos');
+        if (mounted) {
+          setState(() {
+            fixtures = data['response'];
+          });
+        }
       }
     } else {
-      print('❌ Erro na requisição dos jogos: ${response.statusCode}');
       throw Exception('Falha ao carregar jogos: ${response.statusCode}');
     }
   }

@@ -70,6 +70,12 @@ $dartDefines = [ordered]@{
 
 $dartDefines | ConvertTo-Json | Set-Content "env.json" -Encoding utf8
 
+# Chave nativa do Google Maps (arquivos locais ignorados pelo Git)
+"GOOGLE_MAPS_API_KEY=$($envVars['GOOGLE_MAPS_API_KEY'])" |
+  Set-Content "android/maps.properties" -Encoding ascii
+"GOOGLE_MAPS_API_KEY=$($envVars['GOOGLE_MAPS_API_KEY'])" |
+  Set-Content "ios/Flutter/Secrets.xcconfig" -Encoding ascii
+
 # google-services.json (Android)
 $googleServices = Get-Content "android/app/google-services.json.example" -Raw
 foreach ($entry in $envVars.GetEnumerator()) {
@@ -97,4 +103,4 @@ $indexHtml = (Get-Content "web/index.template.html" -Raw).Replace(
 )
 [System.IO.File]::WriteAllText("$root/web/index.html", $indexHtml)
 
-Write-Host "Ambiente preparado: env.json, google-services.json, .firebaserc, web/index.html"
+Write-Host "Ambiente preparado: Dart, Firebase e Google Maps (web, Android e iOS)"

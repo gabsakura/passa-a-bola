@@ -1,178 +1,143 @@
-# ⚽ Passa a Bola
+# Passa a Bola
 
-Um aplicativo multiplataforma construído com Flutter (Dart) e Firebase com o objetivo de fortalecer o ecossistema do futebol feminino, conectando atletas, clubes e torcedores em uma única plataforma digital.
+<p align="center">
+  <strong>Plataforma web e mobile criada para fortalecer o ecossistema do futebol feminino.</strong>
+</p>
 
-[![Flutter](https://img.shields.io/badge/Flutter-02569B?logo=flutter&logoColor=white)](https://flutter.dev) [![Firebase](https://img.shields.io/badge/Firebase-FFCA28?logo=firebase&logoColor=black)](https://firebase.google.com)
+<p align="center">
+  <a href="https://flutter-app-f547b.web.app/">Acessar demonstração</a> ·
+  <a href="#como-executar">Executar localmente</a> ·
+  <a href="#minha-contribuição--gabriel-sakura">Minha contribuição</a>
+</p>
 
-## Sumário
+<p align="center">
+  <img alt="Flutter" src="https://img.shields.io/badge/Flutter-02569B?logo=flutter&logoColor=white">
+  <img alt="Dart" src="https://img.shields.io/badge/Dart-0175C2?logo=dart&logoColor=white">
+  <img alt="Firebase" src="https://img.shields.io/badge/Firebase-DD2C00?logo=firebase&logoColor=white">
+  <img alt="Google Maps" src="https://img.shields.io/badge/Google_Maps-4285F4?logo=googlemaps&logoColor=white">
+</p>
 
-- [Visão Geral](#visão-geral)
-- [Problema e Solução](#problema-e-solução)
-- [Funcionalidades Principais](#funcionalidades-principais)
-- [Stack Tecnológica](#stack-tecnológica)
-- [Estrutura do Projeto](#estrutura-do-projeto)
-- [Como rodar localmente](#como-rodar-localmente)
-- [Demonstração](#demonstração)
-- [Licença](#licença)
-- [Autores / Créditos](#autores--créditos)
+## Sobre o projeto
 
-## Visão Geral
+O futebol feminino ainda enfrenta pouca centralização de informações sobre atletas, clubes, campeonatos e oportunidades. O **Passa a Bola** reúne esses públicos em uma plataforma responsiva, com recursos para organização de times e competições, descoberta de talentos e acompanhamento de conteúdo esportivo.
 
-O Passa a Bola é um aplicativo pensado para dar visibilidade e suporte ao futebol feminino. Através de perfis de atletas e clubes, feed de notícias, dados de partidas em tempo real e ferramentas para análise, o projeto busca conectar toda a cadeia de valor do esporte: atletas, clubes, torcedores e olheiros.
+O projeto foi desenvolvido por uma equipe de cinco estudantes de Engenharia de Software da FIAP e percorreu o ciclo completo de produto: pesquisa de mercado, definição do problema, prototipação, implementação e integração de serviços.
 
-Desenvolvido durante um desafio acadêmico interdisciplinar, o projeto aplica metodologias ágeis, modelagem UML, versionamento Git e boas práticas de segurança no Firestore.
+## Minha contribuição — Gabriel Sakura
 
-## Problema e Solução
+Atuei de ponta a ponta no projeto, com responsabilidade por:
 
-Problema: a cobertura e organização de dados do futebol feminino é fragmentada, prejudicando descoberta de talento, monitoramento de competições e engajamento de público.
+- pesquisa de mercado e levantamento do problema;
+- idealização do produto e definição da experiência do usuário;
+- coleta e preparação inicial de dados por meio de *web scraping*;
+- design das interfaces web e mobile;
+- implementação das telas e integração entre aplicação, Firebase e serviços externos;
+- colaboração técnica e organização das entregas em uma equipe de cinco pessoas.
 
-Solução: plataforma unificada que:
+Além do resultado técnico, o projeto fortaleceu minha autonomia, capacidade de priorização e comunicação para manter as entregas avançando mesmo com diferentes níveis de disponibilidade dentro da equipe.
 
-- Centraliza perfis e histórico de atletas e clubes;
-- Exibe dados de partidas em tempo real através de integrações com APIs públicas;
-- Usa Firebase (Auth + Firestore) para autenticação segura e persistência escalável;
-- Simples e funcional para facilidade de uso.
+## Funcionalidades
 
-## Funcionalidades Principais
+- autenticação e cadastro com diferentes perfis de acesso;
+- feed de notícias, artigos e anúncios;
+- criação, consulta e gerenciamento de times;
+- campeonatos com inscrição, participantes, localização e *check-in*;
+- mapas e busca de campeonatos próximos à pessoa usuária;
+- solicitações e marcadores para observação de atletas por olheiros;
+- consulta de times, partidas e jogadoras por API esportiva;
+- áreas administrativas para conteúdo, equipes e campeonatos;
+- interface responsiva para web e dispositivos móveis.
 
-1. Autenticação (Firebase Auth) — login e cadastro de usuários (atletas, clubes, torcedores, administradores).
-2. Feed principal com notícias, anúncios e atualizações de competições.
-3. Tela de Jogos com placares, estatísticas e escalações (integração via API e times próprios).
-4. Perfis customizáveis (atletas, clubes) com histórico, estatísticas e contatos.
-5. Persistência via Cloud Firestore com consultas e índices para performance.
-6. Segurança aplicada via regras do Cloud Firestore (`firestore.rules`).
+## Arquitetura e tecnologias
 
-## Stack Tecnológica
-
-- Frontend: Flutter (Dart) — https://flutter.dev
-- Backend / Auth / Database: Firebase (Authentication, Cloud Firestore) — https://firebase.google.com
-- Integração de API para dados de partidas (ex.: endpoints públicos de competições)
-- Versionamento: Git / GitHub — https://github.com/Caioncaminha/passabola
-- Análise de dados: Power BI, Pandas (Python)
-- UI/UX: Figma
-
-## Estrutura do Projeto
-
-Visão resumida dos diretórios mais relevantes:
-
-```
-passabola/
-├── lib/                        # Código Flutter/Dart (páginas, widgets, services)
-│   ├── pages/                  # Telas do app
-│   ├── data/                   # Gerenciamento de dados e serviços
-│   ├── models/                 # Modelos (Player, Championship, Team...)
-│   └── widgets/                # Componentes reutilizáveis
-├── dataconnect/                # Configs GraphQL, seeds e scripts de exportação
-├── dataconnect-generated/      # Código gerado para cliente Dart
-├── android/                    # Projeto Android nativo
-├── ios/                        # Projeto iOS nativo
-├── web/                        # Build / assets para web
-├── test/                       # Testes unitários/integração
-├── pubspec.yaml                # Dependências Flutter
-├── firebase.json               # Configuração Firebase (hosting, emulators)
-├── firestore.rules             # Regras de segurança do Firestore
-└── firestore.indexes.json      # Índices para consultas compostas
+```text
+Flutter (web/mobile)
+    ├── Firebase Authentication
+    ├── Cloud Firestore / Firebase Storage / Data Connect
+    ├── Google Maps e geolocalização
+    └── API-Sports
 ```
 
-Arquivos de destaque:
-
-- `lib/firebase_options.dart` — arquivo de configuração gerado pela FlutterFire CLI (opcional)
-- `firestore.rules` — regras de segurança do banco
-- `dataconnect/seed_data.gql` — dados de seed e exemplos para análise
-
-## Como rodar localmente
-
-Pré-requisitos:
-
-- Flutter SDK (recomenda-se a versão estável mais recente) — https://flutter.dev/docs/get-started/install
-- Conta Firebase e projeto criado — https://console.firebase.google.com/
-- Firebase CLI (opcional, para emulador) — https://firebase.google.com/docs/cli
-
-Passo a passo básico (Windows / macOS / Linux):
-
-1. Clone o repositório
-
-```bash
-git clone https://github.com/Caioncaminha/passabola.git
-cd passabola
-```
-
-2. Instale dependências
-
-```bash
-flutter pub get
-```
-
-3. Configurar Firebase
-
-- Crie um projeto no Firebase Console.
-- Adicione apps Android / iOS / Web conforme necessário.
-- Coloque `google-services.json` em `android/app/` e `GoogleService-Info.plist` em `ios/Runner/`.
-- Para web, atualize as chaves em `lib/firebase_options.dart` ou em `web/index.html`.
-
-4. (Opcional) Inicie emuladores do Firebase
-
-```bash
-# Requer Firebase CLI e configuração local
-firebase emulators:start --only firestore,auth
-```
-
-5. Execute o app
-
-```bash
-# Rodar no emulador/dispositivo conectado
-flutter run -d <device-id>
-
-# Para web (Chrome)
-flutter run -d chrome
-```
-
-Notas:
-
-- Para iOS, é necessário macOS com Xcode instalado.
-- Caso o projeto utilize recursos da FlutterFire CLI, gere `lib/firebase_options.dart` com `flutterfire configure`.
+| Camada | Tecnologias |
+| --- | --- |
+| Interface | Flutter, Dart, Material Design |
+| Autenticação e dados | Firebase Auth, Cloud Firestore, Firebase Storage, Data Connect |
+| Mapas e localização | Google Maps, Geolocator, Geocoding |
+| Integrações | HTTP, API-Sports, YouTube Player |
+| Qualidade e entrega | Git, GitHub, Flutter Analyze, Firebase Hosting |
 
 ## Demonstração
 
-<img src ="web/assets/Versão_pc.png" alt="Imagem versão PC" >
-<img src ="web/assets/Principal_adminPC.png" alt="Imagem versão PC" >
-<img src="web/assets/api.png" alt="api_image" width="200"/> 
-<img src="web/assets/padmincampeonatos.png" alt="gerenciar_campeonatos" width="200"/>
-<img src ="web/assets/Mapa_versãoPC.png" alt="Imagem versão PC" ">
-<img src="web/assets/gifdemonstracao.gif" alt="gerenciar_campeonatos" width="250"/> 
+| Login responsivo | Área principal |
+| --- | --- |
+| <img src="web/assets/Versão_pc.png" alt="Tela de login do Passa a Bola" width="460"> | <img src="web/assets/Principal_adminPC.png" alt="Área principal do Passa a Bola" width="460"> |
 
-API de futebol feminino, gerenciar campeonatos (PAdmin), gif do app.
+| Campeonatos no mapa | Administração mobile |
+| --- | --- |
+| <img src="web/assets/Mapa_versãoPC.png" alt="Mapa de campeonatos" width="460"> | <img src="web/assets/padmincampeonatos.png" alt="Administração de campeonatos no celular" height="300"> |
 
-## Contribuição e Git Flow
+> As imagens representam a versão acadêmica atual. Novas capturas podem ser adicionadas em `web/assets/` conforme a interface evoluir.
 
-Fluxo recomendado para contribuir:
+## Como executar
 
-1. Fork do repositório
-2. Crie uma branch: `feature/nome-da-funcionalidade` ou `fix/descricao`
-3. Commit com mensagens claras (conventional commits recomendado)
-4. Abra um Pull Request para a branch `main`
-5. Aguarde revisão, execute testes locais e ajuste conforme feedback
+### Pré-requisitos
 
-Dicas:
+- [Flutter SDK](https://docs.flutter.dev/get-started/install) compatível com Dart `^3.8.0`;
+- projeto configurado no Firebase;
+- chaves próprias do Google Maps e, opcionalmente, da API-Sports.
 
-- Faça commits pequenos e atômicos.
-- Documente decisões arquiteturais no `docs/` ou em issues.
-- Execute `flutter analyze` e os testes antes de submeter o PR.
+### Instalação no Windows
 
-## Licença
+```powershell
+git clone https://github.com/gabsakura/passa-a-bola.git
+cd passa-a-bola
+flutter pub get
+Copy-Item .env.example .env
+```
 
-Este projeto está licenciado sob a Licença MIT. Consulte [MIT License](https://mit-license.org/) para o texto completo.
+Preencha o arquivo `.env` com as credenciais dos seus próprios serviços e execute:
 
----
+```powershell
+.\scripts\run_local.ps1
+```
 
-## Autores / Créditos
+O script transforma as variáveis locais em `env.json`, prepara as configurações nativas do Google Maps e inicia o Flutter com `--dart-define-from-file`. Para escolher um dispositivo:
+
+```powershell
+.\scripts\run_local.ps1 -Device chrome
+```
+
+Nunca envie `.env`, `env.json` ou chaves privadas para o GitHub. O arquivo `.env.example` contém apenas os nomes esperados das variáveis.
+
+## Estrutura principal
+
+```text
+lib/
+├── config/       # variáveis de ambiente e configurações
+├── data/         # autenticação, constantes e acesso a dados
+├── models/       # modelos da aplicação
+├── pages/        # telas públicas, de usuário e administrativas
+├── services/     # localização, endereços, CEP e olheiros
+└── widgets/      # componentes reutilizáveis
+scripts/          # preparação de ambiente, execução e deploy
+web/assets/       # imagens usadas na demonstração
+dataconnect/      # esquema e configuração do Firebase Data Connect
+```
+
+## Verificação antes de contribuir
+
+```bash
+flutter pub get
+dart format --output=none --set-exit-if-changed lib
+flutter analyze
+```
+
+## Equipe
 
 - Caio Nascimento Caminha
-- Gabriel Alexandre Fukushima Sakura
+- **Gabriel Alexandre Fukushima Sakura**
 - Gabriel Oliveira Amaral
 - Lucas Henrique Viana Estevam Sena
 - Rafael Tavares Santos
 
-Projeto desenvolvido como parte da formação do primeiro ano de Engenharia de Software na FIAP
-
----
+Projeto acadêmico desenvolvido na FIAP. O repositório ainda não possui uma licença de uso definida.

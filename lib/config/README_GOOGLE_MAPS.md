@@ -1,156 +1,55 @@
 # Configuração do Google Maps
 
-Este documento explica como configurar a integração com o Google Maps no aplicativo.
+O Passa a Bola carrega a chave do Google Maps pelo ambiente local. Não coloque credenciais diretamente em arquivos Dart, XML, Swift ou HTML.
 
-## 1. Obter API Key do Google Maps
+## 1. Preparar a chave
 
-### Passo 1: Acessar o Google Cloud Console
-1. Acesse [Google Cloud Console](https://console.cloud.google.com/)
-2. Faça login com sua conta Google
-3. Crie um novo projeto ou selecione um existente
+1. No [Google Cloud Console](https://console.cloud.google.com/), selecione ou crie um projeto.
+2. Ative apenas as APIs utilizadas, como Maps JavaScript API, Maps SDK for Android, Maps SDK for iOS e Geocoding API.
+3. Crie uma credencial e aplique restrições de aplicativo e de API.
+4. Para uma publicação real, prefira chaves separadas e restritas para web, Android e iOS.
 
-### Passo 2: Ativar APIs Necessárias
-1. No menu lateral, vá em "APIs e Serviços" > "Biblioteca"
-2. Procure e ative as seguintes APIs:
-   - **Maps SDK for Android**
-   - **Maps SDK for iOS** 
-   - **Geocoding API**
-   - **Places API** (opcional, para busca de lugares)
+## 2. Configurar o ambiente local
 
-### Passo 3: Criar Credenciais
-1. Vá em "APIs e Serviços" > "Credenciais"
-2. Clique em "Criar Credenciais" > "Chave de API"
-3. Copie a chave gerada
+Na raiz do projeto:
 
-### Passo 4: Configurar Restrições (Recomendado)
-1. Clique na chave criada para editá-la
-2. Em "Restrições de aplicativo":
-   - **Android**: Adicione o nome do pacote e SHA-1
-   - **iOS**: Adicione o ID do pacote
-3. Em "Restrições de API": Selecione apenas as APIs necessárias
-
-## 2. Configurar no Aplicativo
-
-### Passo 1: Atualizar API Key
-1. Abra o arquivo `lib/config/google_maps_config.dart`
-2. Substitua `YOUR_GOOGLE_MAPS_API_KEY_HERE` pela sua API key:
-
-```dart
-static const String apiKey = 'SUA_API_KEY_AQUI';
+```powershell
+Copy-Item .env.example .env
 ```
 
-### Passo 2: Configurar Android
+Preencha no arquivo `.env`:
 
-1. Abra `android/app/src/main/AndroidManifest.xml`
-2. Adicione a API key dentro da tag `<application>`:
-
-```xml
-<application>
-    <!-- ... outras configurações ... -->
-    
-    <meta-data
-        android:name="com.google.android.geo.API_KEY"
-        android:value="SUA_API_KEY_AQUI"/>
-        
-    <!-- ... outras configurações ... -->
-</application>
+```env
+GOOGLE_MAPS_API_KEY=sua_chave_restrita
 ```
 
-### Passo 3: Configurar iOS
+Em seguida, execute:
 
-1. Abra `ios/Runner/AppDelegate.swift`
-2. Adicione o import e configure a API key:
-
-```swift
-import UIKit
-import Flutter
-import GoogleMaps
-
-@UIApplicationMain
-@objc class AppDelegate: FlutterAppDelegate {
-  override func application(
-    _ application: UIApplication,
-    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-  ) -> Bool {
-    GMSServices.provideAPIKey("SUA_API_KEY_AQUI")
-    GeneratedPluginRegistrant.register(with: self)
-    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
-  }
-}
+```powershell
+.\scripts\prepare_env.ps1
 ```
 
-### Passo 4: Configurar Permissões
+O script gera arquivos locais ignorados pelo Git:
 
-#### Android
-Adicione em `android/app/src/main/AndroidManifest.xml`:
+- `env.json`, usado pelo código Dart;
+- `web/index.html`, usado no Flutter Web;
+- `android/maps.properties`, usado pelo Android;
+- `ios/Flutter/Secrets.xcconfig`, usado pelo iOS.
 
-```xml
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+Para preparar o ambiente e iniciar o app de uma vez:
+
+```powershell
+.\scripts\run_local.ps1 -Device chrome
 ```
 
-#### iOS
-Adicione em `ios/Runner/Info.plist`:
+## 3. Verificação
 
-```xml
-<key>NSLocationWhenInUseUsageDescription</key>
-<string>Este app precisa acessar sua localização para mostrar torneios próximos.</string>
-<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-<string>Este app precisa acessar sua localização para mostrar torneios próximos.</string>
-```
+- confirme que o mapa abre sem erros;
+- teste a permissão de localização em um dispositivo real;
+- teste busca de endereço e campeonatos próximos;
+- confirme no console da nuvem que a chave está restrita aos aplicativos e APIs esperados;
+- antes de publicar, verifique que `.env`, `env.json`, `maps.properties` e `Secrets.xcconfig` não aparecem no `git status`.
 
-## 3. Testando a Configuração
+## Solução de problemas
 
-1. Execute o aplicativo
-2. Navegue até a página de criação de campeonatos
-3. Teste o seletor de localização
-4. Verifique se o mapa carrega corretamente
-5. Teste a busca de endereços
-
-## 4. Funcionalidades Implementadas
-
-### Modelos de Dados
-- **LocationData**: Modelo para armazenar coordenadas e endereço
-- **Championship**: Atualizado para incluir `locationData`
-
-### Serviços
-- **LocationService**: Gerencia permissões e busca de localização
-- **AnnouncementService**: Já existente
-
-### Widgets
-- **LocationPickerWidget**: Seletor de localização com mapa
-- **ChampionshipLocationPage**: Exibição da localização do campeonato
-
-### Páginas
-- **ChampionshipCreateWithLocationPage**: Exemplo de integração
-- **ChampionshipLocationPage**: Visualização da localização
-
-## 5. Próximos Passos
-
-1. Integrar o seletor de localização na página de criação de campeonatos existente
-2. Adicionar botão "Ver no Mapa" nos cards de campeonatos
-3. Implementar busca de campeonatos por proximidade
-4. Adicionar navegação para o app de mapas nativo
-
-## 6. Solução de Problemas
-
-### Mapa não carrega
-- Verifique se a API key está correta
-- Confirme se as APIs estão ativadas
-- Verifique as restrições de aplicativo
-
-### Erro de permissão
-- Verifique se as permissões estão configuradas
-- Teste em dispositivo físico (não emulador)
-
-### Busca de endereços não funciona
-- Verifique se a Geocoding API está ativada
-- Confirme se a API key tem acesso à API
-
-## 7. Custos
-
-- **Maps SDK**: Gratuito até 28.000 carregamentos de mapa por mês
-- **Geocoding API**: Gratuito até 40.000 requisições por mês
-- **Places API**: Pago conforme uso
-
-Consulte a [página de preços](https://cloud.google.com/maps-platform/pricing) para mais detalhes.
+Se o mapa não carregar, revise as APIs ativadas, as restrições da chave, o identificador do aplicativo e execute novamente `scripts/prepare_env.ps1`. Consulte também a [documentação oficial do Google Maps Platform](https://developers.google.com/maps/documentation).
